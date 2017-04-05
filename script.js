@@ -6,13 +6,6 @@ var listArray = [
       "Walden",
       "The Elephant, the Tiger, and the Cell Phone"
     ]
-  },
-  { name: "Other List",
-    items: [
-      "Hitchhiker's Guide to Galaxy",
-      "Walden",
-      "The Elephant, the Tiger, and the Cell Phone"
-    ]
   }
 ];
 var selectedList = 0;
@@ -27,62 +20,71 @@ function updateLists() {
     listDiv.removeChild(listDiv.lastChild);
   }
 
-  // var list = listArray[0];
-
-  function addHTMLForList(list, i) {
+  listArray.forEach(function(list, i) {
+    // Create an 'a' element
     var aElement = document.createElement("a");
     aElement.classList.add("list-group-item");
     aElement.classList.add("list-group-item-action");
+    aElement.classList.add("list");
 
     aElement.setAttribute("data-index", i);
 
     var textNode = document.createTextNode(list.name);
     aElement.appendChild(textNode);
 
-    // console.log(aElement);
-
     listDiv.appendChild(aElement);
+  });
+}
+
+function updateItemsForSelectedList() {
+  while (itemDiv.hasChildNodes()) {
+    itemDiv.removeChild(itemDiv.lastChild);
   }
 
-  listArray.forEach(addHTMLForList);
-
-  
-
-
-  // <a class="list-group-item list-group-item-action">
-  //         Dummy List
-  //       </a>
+  var listItemArray = listArray[selectedList].items;
+  listItemArray.forEach(function(item, i) {
+    // HOMEWORK
+    // Populate the list-items div (the right div) wit respective list items
+    // - make a new 'a' element
+    // - add classes to its classList
+    // - set value of 'data-index' attribute to i
+    // - Create a textNode with item name
+    // - append textNode to the 'a' element
+    // - append 'a' element to the itemDiv
+  });
 }
 
 updateLists();
+updateItemsForSelectedList();
 
 // ADDING TO LIST
-
 addListButton.addEventListener("click", function(e) {
   e.preventDefault();
-  // console.log("add list button clicked");
-
-  var input = document["add-list-form"]["list-name-input"];
-  var newListName = input.value;
-
-  if (newListName.length > 2) {
-    //create list
-    var list = { name: newListName, items: [] };
-    //add list to array
-    listArray.push(list);
-    //update HTML
+  var listName = document["add-list-form"]["list-name-input"].value;
+  if (listName.length >= 3) {
+    var newList = {
+        name: listName,
+        items: []
+      };
+    listArray.push(newList);
     updateLists();
-    //clear input
-    document["add-list-form"].reset();
-    //close popup
-    closePopups();
-
   } else {
-    alert("List name invalid!");
+    alert("Please enter a valid list name: Atleast 3 characters");
   }
 });
 
 // ADDING TO LIST ITEMS
+addItemButton.addEventListener("click", function(e) {
+  e.preventDefault();
+  var currentList = listArray[selectedList];
+  var itemArray = currentList.items;
+
+  // HOMEWORK
+  // - get the input value in a variable
+  // - check if the input value is more than 2 characters
+  // - add it into listItemArray
+  // - update listItem div
+});
 
 // POP-UP HANDLING CODE
 var buttonsArray = document.querySelectorAll(".popup-button");
