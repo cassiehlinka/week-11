@@ -1,3 +1,31 @@
+// POP-UP HANDLING CODE
+var buttonsArray = document.querySelectorAll(".popup-button");
+// querySelectorAll returns a DOMTokenList and not an Array (which includes methods like forEach)
+buttonsArray = Array.from(buttonsArray); // Conevrting DOMTokenList to an Array
+
+buttonsArray.forEach(function(button) {
+  button.addEventListener("click", function() {
+    var popup = document.getElementById(this.dataset.popupid);
+    // The data attributes can be accessed by .dataset variable which is part of the DOMElement (check HTML for buttonsArray)
+    popup.style.display = "flex";
+  });
+});
+
+var closeButton = document.querySelectorAll(".close");
+closeButton.forEach(function(button, i) {
+  button.addEventListener("click", closePopups);
+});
+
+function closePopups() {
+  var popupsArray = Array.from(document.querySelectorAll(".popup"));
+  popupsArray.forEach(function(popup) {
+    popup.style.display = "none";
+  });
+}
+
+
+
+
 // LIST ARRAY IS WHERE OUR DATA FOR THIS APPLICATION LIVES
 var listArray = [
   { name: "Books to Read",
@@ -6,8 +34,17 @@ var listArray = [
       "Walden",
       "The Elephant, the Tiger, and the Cell Phone"
     ]
+  },
+
+  { name: "Movies to Watch",
+    items: [
+      "Lord of the Rings",
+      "Harry Potter",
+      "Star Wars"
+    ]
   }
 ];
+
 var selectedList = 0;
 var listDiv = document.getElementById("lists");
 var itemDiv = document.getElementById("list-items");
@@ -46,16 +83,23 @@ function updateItemsForSelectedList() {
     // HOMEWORK
     // Populate the list-items div (the right div) wit respective list items
     // - make a new 'a' element
+    var aElement = document.createElement("a");
     // - add classes to its classList
+    aElement.classList.add("list-group-item");
+    aElement.classList.add("list-group-item-action");
+    aElement.classList.add("list");
     // - set value of 'data-index' attribute to i
+    aElement.setAttribute("data-index", i);
     // - Create a textNode with item name
+    var textNode = document.createTextNode(item.name);
+    console.log(textNode)
     // - append textNode to the 'a' element
+    aElement.appendChild(textNode);
     // - append 'a' element to the itemDiv
+    itemDiv.appendChild(aElement);
   });
 }
 
-updateLists();
-updateItemsForSelectedList();
 
 // ADDING TO LIST
 addListButton.addEventListener("click", function(e) {
@@ -81,32 +125,21 @@ addItemButton.addEventListener("click", function(e) {
 
   // HOMEWORK
   // - get the input value in a variable
+  var itemName = document["add-item-form"]["item-name-input"].value;
   // - check if the input value is more than 2 characters
+  if (itemName.length >= 3) {
+    var newItem = {
+        name: itemName,
+        items: []
+      };
+    itemArray.push(newItem);
+    updateLists();
+  } else {
+    alert("Please enter a valid list name: Atleast 3 characters");
+  }
   // - add it into listItemArray
   // - update listItem div
 });
 
-// POP-UP HANDLING CODE
-var buttonsArray = document.querySelectorAll(".popup-button");
-// querySelectorAll returns a DOMTokenList and not an Array (which includes methods like forEach)
-buttonsArray = Array.from(buttonsArray); // Conevrting DOMTokenList to an Array
-
-buttonsArray.forEach(function(button) {
-  button.addEventListener("click", function() {
-    var popup = document.getElementById(this.dataset.popupid);
-    // The data attributes can be accessed by .dataset variable which is part of the DOMElement (check HTML for buttonsArray)
-    popup.style.display = "flex";
-  });
-});
-
-var closeButton = document.querySelectorAll(".close");
-closeButton.forEach(function(button, i) {
-  button.addEventListener("click", closePopups);
-});
-
-function closePopups() {
-  var popupsArray = Array.from(document.querySelectorAll(".popup"));
-  popupsArray.forEach(function(popup) {
-    popup.style.display = "none";
-  });
-}
+updateLists();
+updateItemsForSelectedList();
