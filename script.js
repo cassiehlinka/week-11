@@ -87,11 +87,11 @@ function updateItemsForSelectedList() {
     // - add classes to its classList
     aElement.classList.add("list-group-item");
     aElement.classList.add("list-group-item-action");
-    aElement.classList.add("list");
+    // aElement.classList.add("list");
     // - set value of 'data-index' attribute to i
     aElement.setAttribute("data-index", i);
     // - Create a textNode with item name
-    var textNode = document.createTextNode(item.name);
+    var textNode = document.createTextNode(item);
     console.log(textNode)
     // - append textNode to the 'a' element
     aElement.appendChild(textNode);
@@ -127,18 +127,15 @@ addItemButton.addEventListener("click", function(e) {
   // - get the input value in a variable
   var itemName = document["add-item-form"]["item-name-input"].value;
   // - check if the input value is more than 2 characters
-  if (itemName.length >= 3) {
-    var newItem = {
-        name: itemName,
-        items: []
-      };
-    itemArray.push(newItem);
+  if (itemName.length >= 2) {
+    itemArray.push(itemName);
     updateLists();
   } else {
-    alert("Please enter a valid list name: Atleast 3 characters");
+    alert("Please enter a valid list name: Atleast 2 characters");
   }
   // - add it into listItemArray
   // - update listItem div
+  updateItemsForSelectedList();
 });
 
 updateLists();
